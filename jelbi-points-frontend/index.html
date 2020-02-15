@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+
+  <style>
+    body,
+    html {
+      height: 100vh;
+    }
+
+    #mapid {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="mapid"></div>
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+  <script>
+    src = "https://raw.githubusercontent.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"
+  </script>
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+  <script>
+    const url = 'http://localhost:8080'
+
+
+    var map = L.map('mapid').setView([52.5, 13.3], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    (async () => {
+
+      const parking_areas = await fetch(
+        'https://raw.githubusercontent.com/dnltsk/jelbi-points/master/geodata/parking-areas-100m.geojson'
+      )
+        .then(res => res.json())
+
+      console.log(parking_areas)
+
+      L.geoJSON(parking_areas, {
+        onEachFeature
+      }).addTo(map)
+
+    })()
+
+    const onEachFeature = ((feature, layer) => {
+      layer.on('click', e => {
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(feature.geometry.coordinates),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(data => data.json())
+          .then(data => L.geoJSON(data, {
+            style: {
+              color: '#F0D722'
+            }
+          }).addTo(map))
+          .catch(e => console.error(e))
+      })
+    })
+  </script>
+</body>
+
+</html>
