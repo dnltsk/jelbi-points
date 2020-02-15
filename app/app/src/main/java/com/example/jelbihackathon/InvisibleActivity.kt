@@ -13,17 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.tapadoo.alerter.Alerter
 
-fun showDialog1(context:Context){
-    with(AlertDialog.Builder(context)){//,R.style.MyAlertDialogStyle)){
-        setTitle("+2 Minuten – 30% billiger")
-        setMessage("Hey, möchtest du den Scooter an einem 2 minuten" +
-                " entfernten Ort abstellen und dafür 30% weniger für die gesamte Fahrt zahlen?")
-        setPositiveButton("Ok",null)
-        setNeutralButton("Route anzeigen",null)
-        setNegativeButton("Cancel",null)
-        show()
-    }
-}
 fun showConfetti(activity: Activity){
 
 }

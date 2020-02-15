@@ -10,6 +10,7 @@ import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,12 +39,10 @@ class MainActivity : AppCompatActivity() {
             showDialog1(this)
         }*/
 
-        //startActivity(Intent(this,InvisibleActivity::class.java))
-        //startService(Intent(this,RemoteControlReceiver::class.java))
-        //startService(Intent(this,JelbiIntentService::class.java))
     }
 
     fun showNotification(context: Activity){
+
         with(Alerter.create(context)) {
             setTitle("Umfrage: Jelbi Station am Südkreuz")
             setBackgroundColorInt(Color.parseColor("#FAD201"))
@@ -116,6 +115,19 @@ fun doAfter5(block: () -> Unit){
         }
     }
 }
+
+fun showDialog1(context:Context){
+    with(AlertDialog.Builder(context)){//,R.style.MyAlertDialogStyle)){
+        setTitle("+3 Minuten Fahrt – 20% billiger")
+        setMessage("Hey, möchtest du den VW Crafter an einem Jelbi Point" +
+                " abstellen?\nAls Dankeschön erhältst du 20% Nachlass auf die Fahrt.")
+        setPositiveButton("Ok",null)
+        setNeutralButton("Route anzeigen",null)
+        setNegativeButton("Cancel",null)
+        show()
+    }
+}
+
 fun <T> T.doAsyncThrowOnUI(task: AnkoAsyncContext<T>.() -> Unit) = doAsync(
     exceptionHandler = { thr -> Handler(Looper.getMainLooper()).post { throw thr }},
     task = task)
