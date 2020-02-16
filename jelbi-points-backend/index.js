@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const uuid = require('uuid/v4')
 const axios = require('axios')
+const path = require('path')
 
 require('dotenv').config()
 
@@ -12,7 +13,9 @@ app.use(cors())
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.post('/', (req, res, next) => {
+app.use('/', express.static('public'))
+
+app.post('/api', (req, res, next) => {
   bliq(req.body)
     .then(data => data.data)
     .then(result => res.json(result))
