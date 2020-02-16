@@ -47,10 +47,8 @@
       )
         .then(res => res.json())
 
-      console.log(parking_areas)
-
       L.geoJSON(parking_areas, {
-        onEachFeature
+        onEachFeature,
       }).addTo(map)
 
     })()
@@ -67,7 +65,8 @@
           .then(data => data.json())
           .then(data => L.geoJSON(data, {
             style: {
-              color: '#F0D722'
+              color: '#814997',
+              weight: 15
             }
           }).addTo(map))
           .catch(e => console.error(e))
